@@ -5,7 +5,7 @@
 }(this, (function () {
 
     var Sort = {
-        bubbleSort: function (arr) {
+        bubbleSort: function(arr) {
             var i = arr.length;
             var j;
             var temp;
@@ -21,49 +21,36 @@
             }
             return arr
         },
-        quickSortA: function (array) {
-            function sort(prev, numsize) {
-                var nonius = prev;
-                var j = numsize - 1;
-                var flag = array[prev];
-                if ((numsize - prev) > 1) {
-                    while (nonius < j) {
-                        for (; nonius < j; j--) {
-                            if (array[j] < flag) {
-                                array[nonius++] = array[j];　//a[i] = a[j]; i += 1;
-                                break;
-                            };
-                        }
-                        for (; nonius < j; nonius++) {
-                            if (array[nonius] > flag) {
-                                array[j--] = array[nonius];
-                                break;
-                            }
-                        }
-                    }
-                    array[nonius] = flag;
-                    sort(0, nonius);
-                    sort(nonius + 1, numsize);
-                }
-            }
-            sort(0, array.length);
-            return array;
-        },
         quickSort: function(arr) {
-            if(arr.length <= 1) return arr
-            var left = [];
-            var right = [];
-            var pivotIndex = Math.floor(arr.lenght / 2);
-            var pivot = arr.splice(pivotIndex,1)[0];
-            arr.forEach(function(item) {
-                if(item <= pivot) {
-                    left.push(item)
-                } else {
-                    right.push(item)
+            /**
+             * @description 对数组的一部分进行排序,快排的基准为取待排序部分首项
+             * @param {Number} i  待排序部分开始位置
+             * @param {Number} j 待排序部分结束位置
+             */
+            function sort(i,j) {
+                if(i >= j) {return} // 递归出口 
+                let start = i;
+                let end = j;
+                while(i < j) {
+                    for(;j>i;j--) {
+                        if(arr[i] > arr[j]) {
+                            [arr[j],arr[i]] = [arr[i],arr[j]];
+                            break;
+                        } 
+                    }
+                    for(;i<j;++i) {
+                        if(arr[i] > arr[j]) {
+                            [arr[j],arr[i]] = [arr[i],arr[j]];
+                            break;
+                        } 
+                    }
                 }
-            })
-            return this.quickSort(left).concat(pivot, this.quickSort(right))
-
+                // 此时 i == j , arr[i] 左边的小于等于 arr[i]，右边的大于arr[i]
+                sort(start,i-1);
+                sort(i+1,end)
+            }
+            sort(0,arr.length - 1);
+            return arr;
         }
 
     }
